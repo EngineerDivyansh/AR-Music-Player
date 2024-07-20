@@ -1,11 +1,15 @@
 {
-  "name": "ar-project",
+  "name": "ar-music-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "script.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "howler": "^2.2.4"
+  }
 }
