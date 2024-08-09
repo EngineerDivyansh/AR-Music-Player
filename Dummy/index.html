@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Experience</title>
+
+    <link rel="stylesheet" href="./index.css">
+
+    <!-- Responsible for the virtual 3D object -->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+
+
+    <!-- Responsible for scanning the barcode/pattern -->
+    <script
+      src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <!-- Responsible for making animation -->
+    <script
+      src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js">
+        </script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+      integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    
+  </head>
+
+  <body>
+
+    <!-- Button to request camera permission -->
+    <div class="camera-btn" id="camera-btn">
+
+      <h2>Welcome to the AR Music Mixer</h2>
+      <p>Click the button below to start the AR experience .</p>
+      <button onclick="startAR()">Start AR Experience</button>
+    </div>
+
+    <!-- Div to contain the A-Frame scene (initially hidden) -->
+    <div class="scene-container" id="scene-container"> 
+
+    </div>
+
+
+    <!-- Button to stop the AR experience -->
+    <div class="stop-btn-container" id="stop-btn-container">
+      <button onclick="stopAR()">Stop AR Experience</button>
+    </div>
+
+  <script>
+   function startAR() 
+      {
+            // Hide the button container..
+            document.getElementById('camera-btn').style.display = 'none';
+
+            // Show the AR scene container..
+            const sceneContainer = document.getElementById('scene-container');
+            sceneContainer.classList.add('active');
+
+
+            // Show the stop button container..
+            document.getElementById('stop-btn-container').classList.add('active');
+
+            // Add the AR scene dynamically...
+ sceneContainer.innerHTML = `  
+  <a-scene arjs="detectionMode: mono_and_matrix; matrixCodeType: 3x3">
+
+  <a-assets>
+    <img id="drumsImage" src="./assets/drums.png"/>
+    <img id="guitarImage" src="./assets/guitar.png"/>
+    <img id="micImage" src="./assets/mic.png"/>
+    <img id="pianoImage" src="./assets/piano.png"/>
+  </a-assets>
+
+  <a-marker name="drums" class="ar-marker" type="barcode" value="0">
+    <a-image src="#drumsImage" rotation="90 0 0" position="0 0 0"/>
+  </a-marker>
+
+  <a-marker name="guitar" class="ar-marker" type="barcode" value="1">
+    <a-image src="#guitarImage" rotation="90 0 0"/>
+  </a-marker>
+
+  <a-marker name="mic" class="ar-marker" type="barcode" value="2">
+    <a-image src="#micImage" rotation="90 0 0"/>
+  </a-marker>
+
+  <a-marker name="piano" class="ar-marker" type="barcode" value="4">
+    <a-image src="#pianoImage" rotation="90 0 0"/>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+
+  </a-scene>  `   ;
+
+    let guitar = new Howl({
+      src: ['./audio/guitar.mp3']
+    });
+  
+    let mic = new Howl({
+      src: ['./audio/mic.mp3']
+    });
+  
+    let drums = new Howl({
+      src: ['./audio/drums.mp3']
+    });
+  
+    let piano = new Howl({
+      src: ['./audio/piano.mp3']
+    });
+  
+    let audioMap = {
+      'guitar': guitar,
+      'drums': drums,
+      'piano': piano,
+      'mic': mic
+    }
+  
+    guitar.play();
+    mic.play();
+    drums.play();
+    piano.play();
+
+    guitar.mute(true) ;
+    mic.mute(true) ;
+    drums.mute(true) ;
+    piano.mute(true) ;
+
+    
+  let arMarkers = document.getElementsByClassName('ar-marker');
+  
+  
+  Array.from(arMarkers).forEach(function (arMarker)
+   {
+    let name = arMarker.getAttribute('name');
+
+    arMarker.addEventListener('markerFound', function ()
+     {
+      audioMap[name].mute(false);
+      console.log("the audio instrutment is unmuted : " , name) ;
+     });
+
+    arMarker.addEventListener('markerLost', function ()
+     {
+      audioMap[name].mute(true);
+      console.log("the audio instrutment is muted: " , name) ;
+     });
+
+   }
+  );
+
+ }
+
+</script>
+
+<script>
+ function stopAR()
+   {
+    console.log("stop AR function is called .....");
+
+    // Hide the AR scene container
+    const sceneContainer = document.getElementById('scene-container');
+    sceneContainer.classList.remove('active');
+
+    console.log("Removed 'active' class from scene-container");
+
+    // Show the button container
+    document.getElementById('camera-btn').style.display = 'flex';
+    console.log("Set camera-btn display to 'flex'");
+
+    // Hide the stop button container
+    document.getElementById('stop-btn-container').classList.remove('active');
+    console.log("Removed 'active' class from stop-btn-container");
+
+    // Remove the AR scene content
+    sceneContainer.innerHTML = '';
+    console.log("Cleared the innerHTML of scene-container");
+   }
+</script>
+
+</body>
+</html>

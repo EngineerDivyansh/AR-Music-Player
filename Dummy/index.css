@@ -1,0 +1,96 @@
+body
+  {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ece9e6, #ffffff);
+  }
+
+.camera-btn, .scene-container, .stop-btn-container {
+    transition: all 0.3s ease-in-out;
+}
+
+ .scene-container {
+    height: 0;
+    width: 100%;
+    overflow: hidden;
+    display: none; 
+    position: relative;
+} 
+
+.scene-container.active {
+    height: 100%;
+    display: block;
+}
+
+.camera-btn{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 20px;
+    text-align: center;
+}
+
+.stop-btn-container {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    display: none; /* Initially hidden */
+}
+
+
+.camera-btn
+{
+    flex-direction: column ;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    background-image: url("./background.jpg");
+    /* setting the background.. */
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    /* setting the background.. */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 10px;
+    margin: auto;
+}
+
+.camera-btn button, .stop-btn-container button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    background: #007BFF;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+}
+
+.camera-btn button:hover, .stop-btn-container button:hover {
+    background: #0056b3;
+}
+
+
+.stop-btn-container.active {
+    display: flex;
+}
+
+a-scene
+ {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+ }
